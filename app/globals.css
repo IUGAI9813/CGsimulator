@@ -1,0 +1,165 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css");
+@import "tailwindcss";
+
+/* ==========================================================================
+   CoreGuard Dual Theme Design System (Dark SOC / Light Slate)
+   ========================================================================== */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0b0e14;        /* Deep Charcoal Dark */
+  --foreground: #f1f5f9;        /* Slate 100 */
+  
+  --panel-bg: #121622;          /* Matte Dark Slate Panel */
+  --panel-header-bg: #161b2a;   /* Header Dark */
+  --panel-border: #23293b;      /* Clean Dark Divider */
+  --panel-border-hover: #3b445c;
+  
+  --brand-cyan: #38bdf8;        /* Azure Sky Cyan */
+  --brand-emerald: #10b981;     /* Secure Emerald */
+  --brand-amber: #f59e0b;       /* Warning Amber */
+  --brand-rose: #f43f5e;        /* Critical Rose */
+  --brand-purple: #a855f7;      /* Tech Purple */
+  
+  --input-bg: #090c12;
+  --input-border: #23293b;
+  --muted-text: #94a3b8;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --background: #dce2e9;        /* Muted Cool Slate Canvas */
+  --foreground: #0f172a;        /* Crisp Slate 900 */
+  
+  --panel-bg: #e8edf4;          /* Soft Grey Panel */
+  --panel-header-bg: #d7e0ec;   /* Soft Grey Header */
+  --panel-border: #bcc8d6;      /* Crisp Grey Border */
+  --panel-border-hover: #8e9fae;
+  
+  --brand-cyan: #0284c7;        /* Corporate Blue */
+  --brand-emerald: #059669;     /* Forest Emerald */
+  --brand-amber: #d97706;       /* Deep Amber */
+  --brand-rose: #e11d48;        /* Vibrant Crimson */
+  --brand-purple: #7e22ce;      /* Deep Purple */
+  
+  --input-bg: #f4f7fb;          /* Soft Input Grey */
+  --input-border: #bcc8d6;
+  --muted-text: #526377;
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+@theme {
+  --color-panel-bg: var(--panel-bg);
+  --color-panel-border: var(--panel-border);
+  --color-panel-border-hover: var(--panel-border-hover);
+  --color-brand-cyan: var(--brand-cyan);
+  --color-brand-emerald: var(--brand-emerald);
+  --color-brand-amber: var(--brand-amber);
+  --color-brand-rose: var(--brand-rose);
+  --color-brand-purple: var(--brand-purple);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
+  letter-spacing: -0.018em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  letter-spacing: inherit;
+}
+
+/* Tabular numbers for telematics, timers, and telemetry metrics */
+.tabular-nums,
+.font-mono,
+table td {
+  font-feature-settings: "tnum" 1, "cv05" 1;
+}
+
+/* Custom Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--panel-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--panel-border-hover);
+}
+
+/* Cyber Panel */
+.cyber-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cyber-panel:hover {
+  border-color: var(--panel-border-hover);
+}
+
+.cyber-panel-header {
+  border-bottom: 1px solid var(--panel-border);
+  padding: 0.75rem 1rem;
+  background-color: var(--panel-header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Subtle Map Grid Background */
+.map-grid {
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Pulsing radar ping */
+.ping-dot {
+  position: relative;
+  display: inline-flex;
+}
+
+.ping-dot::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.75;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
