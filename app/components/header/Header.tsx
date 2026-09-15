@@ -1,23 +1,26 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Shield, Activity, Radio, Moon, Sun, Settings, Globe, RefreshCw } from 'lucide-react';
-import { useSimulator } from '../context/SimulatorContext';
+import { Radio, Moon, Sun, Settings, Globe, Shield, RefreshCw } from 'lucide-react';
+import { useSimulator } from '../../context/SimulatorContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface HeaderProps {
   activeTab: 'fleet' | 'provisioning' | 'telemetry';
   setActiveTab: (tab: 'fleet' | 'provisioning' | 'telemetry') => void;
+  activeNodesCount?: number;
+  totalNodesCount?: number;
 }
 
-export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
-  const { vehicles, config, updateConfig, telemetryLogs, theme, toggleTheme } = useSimulator();
+export const Header: React.FC<HeaderProps> = ({
+  activeTab,
+  setActiveTab,
+  activeNodesCount = 0,
+  totalNodesCount = 0,
+}) => {
+  const { config, updateConfig, theme, toggleTheme } = useSimulator();
+  const { language, setLanguage, t } = useLanguage();
   const [showConfigModal, setShowConfigModal] = useState(false);
-
-  const runningCount = vehicles.filter(v => v.lifecycleStatus === 'RUNNING').length;
-  const attackCount = vehicles.reduce((sum, v) => {
-    const inj = v.injections;
-    return sum + (inj.lidarFailure || inj.v2xLatencySpike || inj.gpsSpoofing || inj.cameraOffline || inj.canBusInjection ? 1 : 0);
-  }, 0);
 
   return (
     <header className="border-b border-[var(--panel-border)] bg-[var(--panel-header-bg)] sticky top-0 z-40 backdrop-blur-md">
@@ -31,49 +34,32 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-sm font-black tracking-wider uppercase text-[var(--foreground)]">
-                CoreGuard <span className="text-brand-cyan">Simulator</span>
+                {t.appTitle.split(' ')[0]} <span className="text-brand-cyan">{t.appTitle.split(' ')[1] || 'CGS'}</span>
               </span>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30">
                 v2.6 CGS CORE
               </span>
             </div>
             <p className="text-[11px] text-[var(--muted-text)] font-mono">
-              Autonomous Vehicle Fleet & Cyber-Attack Ingestion Engine
+              {t.appSubtitle}
             </p>
           </div>
         </div>
 
-        {/* Live Counters */}
+        {/* Live Counters & Controls */}
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded bg-[var(--input-bg)] border border-[var(--panel-border)]">
             <span className="w-2 h-2 rounded-full bg-brand-emerald animate-ping" />
-            <span className="text-[11px] font-mono text-[var(--muted-text)]">Active Nodes:</span>
+            <span className="text-[11px] font-mono text-[var(--muted-text)]">{t.activeNodes}:</span>
             <span className="text-xs font-mono font-bold text-[var(--foreground)] tabular-nums">
-              {runningCount} / {vehicles.length}
-            </span>
-          </div>
-
-          {attackCount > 0 && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-brand-rose/10 border border-brand-rose/40 animate-pulse">
-              <span className="w-2 h-2 rounded-full bg-brand-rose" />
-              <span className="text-[11px] font-mono text-brand-rose font-bold">
-                {attackCount} INJECTIONS ACTIVE
-              </span>
-            </div>
-          )}
-
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded bg-[var(--input-bg)] border border-[var(--panel-border)]">
-            <Activity className="w-3.5 h-3.5 text-brand-cyan" />
-            <span className="text-[11px] font-mono text-[var(--muted-text)]">Packets Sent:</span>
-            <span className="text-xs font-mono font-bold text-[var(--foreground)] tabular-nums">
-              {telemetryLogs.length}
+              {activeNodesCount} / {totalNodesCount}
             </span>
           </div>
 
           {/* Rate Selector */}
           <div className="flex items-center gap-1 bg-[var(--input-bg)] p-1 rounded border border-[var(--panel-border)]">
-            <span className="text-[10px] font-mono text-[var(--muted-text)] px-1.5 font-bold">INTERVAL:</span>
-            {[500, 1000, 2000].map(interval => (
+            <span className="text-[10px] font-mono text-[var(--muted-text)] px-1.5 font-bold">{t.interval}:</span>
+            {[500, 1000, 2000].map((interval) => (
               <button
                 key={interval}
                 onClick={() => updateConfig({ intervalMs: interval })}
@@ -88,11 +74,35 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             ))}
           </div>
 
-          {/* Config Modal Button */}
+          {/* Language Switcher (EN / KO) */}
+          <div className="flex items-center bg-[var(--input-bg)] p-0.5 rounded border border-[var(--panel-border)] font-mono text-[11px]">
+            <button
+              onClick={() => setLanguage('EN')}
+              className={`px-2 py-1 rounded font-bold transition-all cursor-pointer ${
+                language === 'EN'
+                  ? 'bg-brand-cyan text-slate-950 shadow-sm'
+                  : 'text-[var(--muted-text)] hover:text-[var(--foreground)]'
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('KO')}
+              className={`px-2 py-1 rounded font-bold transition-all cursor-pointer ${
+                language === 'KO'
+                  ? 'bg-brand-cyan text-slate-950 shadow-sm'
+                  : 'text-[var(--muted-text)] hover:text-[var(--foreground)]'
+              }`}
+            >
+              KO
+            </button>
+          </div>
+
+          {/* Settings Button */}
           <button
             onClick={() => setShowConfigModal(!showConfigModal)}
             className="p-2 rounded bg-[var(--input-bg)] border border-[var(--panel-border)] hover:border-brand-cyan text-[var(--muted-text)] hover:text-brand-cyan transition-all cursor-pointer"
-            title="Simulator Settings / Target API"
+            title={t.settings}
           >
             <Settings className="w-4 h-4" />
           </button>
@@ -120,10 +130,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             }`}
           >
             <Shield className="w-3.5 h-3.5" />
-            <span>Fleet & Attack Matrix</span>
-            <span className="ml-1 text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/20 text-[var(--foreground)]">
-              {vehicles.length}
-            </span>
+            <span>{t.tabFleet}</span>
           </button>
 
           <button
@@ -135,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             }`}
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            <span>Vehicle Provisioning</span>
+            <span>{t.tabProvisioning}</span>
           </button>
 
           <button
@@ -146,21 +153,21 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                 : 'border-transparent text-[var(--muted-text)] hover:text-[var(--foreground)]'
             }`}
           >
-            <Activity className="w-3.5 h-3.5" />
-            <span>Telemetry Stream & Map</span>
+            <Radio className="w-3.5 h-3.5" />
+            <span>{t.tabTelemetry}</span>
             <span className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />
           </button>
         </div>
       </div>
 
-      {/* Quick Settings Drawer / Overlay */}
+      {/* Quick Settings Drawer */}
       {showConfigModal && (
         <div className="bg-[var(--panel-bg)] border-b border-[var(--panel-border)] p-4 text-xs font-mono">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-brand-cyan" />
-                <span className="font-bold text-[var(--foreground)]">Target SOC API Endpoint:</span>
+                <span className="font-bold text-[var(--foreground)]">{t.targetApiEndpoint}</span>
                 <input
                   type="text"
                   value={config.targetApiUrl}
@@ -177,13 +184,11 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                   onChange={(e) => updateConfig({ forwardHttp: e.target.checked })}
                   className="w-4 h-4 rounded text-brand-cyan focus:ring-0 cursor-pointer"
                 />
-                <span className="text-[var(--foreground)]">
-                  Forward Real HTTP Telemetry (`POST /api/v1/telemetry/ingest`)
-                </span>
+                <span className="text-[var(--foreground)]">{t.forwardHttp}</span>
               </label>
 
               <div className="flex items-center gap-2">
-                <span className="text-[var(--muted-text)]">Heartbeat Timeout Limit:</span>
+                <span className="text-[var(--muted-text)]">{t.heartbeatTimeoutLimit}</span>
                 <span className="font-bold text-brand-amber">{config.heartbeatTimeoutSeconds}s</span>
               </div>
             </div>
@@ -192,7 +197,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
               onClick={() => setShowConfigModal(false)}
               className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white font-bold cursor-pointer"
             >
-              Close
+              {t.close}
             </button>
           </div>
         </div>
