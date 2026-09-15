@@ -6,13 +6,40 @@ export type SensorType = 'LIDAR' | 'RADAR' | 'CAMERA' | 'GNSS' | 'V2X' | 'CAN_BU
 
 export interface DeviceSensor {
   id: string;
+  deviceId?: string;
   name: string;
   type: SensorType;
+  deviceType?: string;
+  serialNumber?: string;
   status: 'ONLINE' | 'DEGRADED' | 'OFFLINE';
+  deviceStatus?: 'DEV_ONLINE' | 'DEV_DEGRADED' | 'DEV_OFFLINE';
   mountPosition: string;
   firmware: string;
+  firmwareVersion?: string;
   fps?: number;
   latencyMs?: number;
+}
+
+export interface VehicleDevicePayload {
+  deviceId: string;
+  deviceType: string;
+  serialNumber: string;
+  status: string; // 'DEV_ONLINE' | 'DEV_DEGRADED' | 'DEV_OFFLINE'
+  firmwareVersion: string;
+  mountPosition?: string;
+}
+
+export interface VehicleRegistrationPayload {
+  vehicleType: VehicleType;
+  vin: string;
+  model: string;
+  status: string; // e.g. 'VEH_ACTIVE'
+  speedLimit: number;
+  assignedZone: string;
+  firmwareVersion: string;
+  latitude: number;
+  longitude: number;
+  devices: VehicleDevicePayload[];
 }
 
 export interface AttackInjections {
@@ -43,14 +70,24 @@ export interface TelemetryPayload {
 
 export interface Vehicle {
   id: string;
+  vehicleId?: string;
   name: string;
   type: VehicleType;
+  vehicleType?: VehicleType;
   vin: string;
+  model?: string;
+  status?: string;
+  speedLimit?: number;
+  assignedZone?: string;
+  firmwareVersion?: string;
+  latitude?: number;
+  longitude?: number;
   registeredAt: string;
   lifecycleStatus: LifecycleStatus;
   lastHeartbeat: number; // Date.now() timestamp
   secondsSinceLastHeartbeat: number;
   sensors: DeviceSensor[];
+  devices?: VehicleDevicePayload[];
   injections: AttackInjections;
   lastTelemetry: TelemetryPayload | null;
   routeProgress: number; // 0.0 to 1.0 along waypoint loop
@@ -72,3 +109,4 @@ export interface SimulatorConfig {
   forwardHttp: boolean;        // Whether to perform real POST requests
   heartbeatTimeoutSeconds: number; // Default: 10s
 }
+

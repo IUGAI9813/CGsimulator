@@ -38,18 +38,23 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
     >
       {/* Header */}
       <div className="cyber-panel-header flex-wrap gap-2">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-[var(--foreground)] font-mono">
-              {vehicle.name}
+              {vehicle.model || vehicle.name}
             </span>
             <span className="text-xs font-mono font-bold text-brand-cyan bg-brand-cyan/10 px-2 py-0.5 rounded border border-brand-cyan/30">
-              {vehicle.id}
+              {vehicle.vehicleId || vehicle.id}
             </span>
           </div>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--input-bg)] text-[var(--muted-text)] border border-[var(--panel-border)] uppercase">
-            {vehicle.type}
+            {vehicle.vehicleType || vehicle.type}
           </span>
+          {vehicle.assignedZone && (
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-300 border border-emerald-800/40">
+              {vehicle.assignedZone}
+            </span>
+          )}
           <span className="hidden sm:inline text-[10px] font-mono text-[var(--muted-text)]">
             {t.vin}: {vehicle.vin}
           </span>

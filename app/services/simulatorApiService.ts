@@ -1,5 +1,5 @@
 import { api } from './apiClient';
-import { TelemetryPayload, Vehicle } from '../types/simulator';
+import { TelemetryPayload, Vehicle, VehicleRegistrationPayload } from '../types/simulator';
 
 /**
  * Service for communicating with backend / CoreGuard SOC Gateway using Axios
@@ -16,15 +16,33 @@ export const simulatorApiService = {
   /**
    * Dispatches vehicle provisioning registration request
    */
-  async registerVehicle(targetUrl: string = '', vehicle: Partial<Vehicle>): Promise<any> {
+  async registerVehicle(targetUrl: string = '', vehicle: VehicleRegistrationPayload | Partial<Vehicle> | any): Promise<any> {
     const url = targetUrl ? `${targetUrl}/api/v1/simulator/vehicles` : '/api/v1/simulator/vehicles';
-    return api.post(url, {
-      vehicleId: vehicle.id,
-      name: vehicle.name,
-      type: vehicle.type,
-      vin: vehicle.vin,
-      sensors: vehicle.sensors,
-    });
+
+    // Normalize payload to match CoreGuard backend contract
+    const payload: VehicleRegistrationPayload = {
+      vehicleType: vehicle.vehicleType || vehicle.type || 'ROBOTAXI',
+      vin: vehicle.vin || 'KN4CG2026TX10501',
+      model: vehicle.model || 'Hyundai IONIQ 5 Robotaxi',
+      status: vehicle.status || 'VEH_ACTIVE',
+      speedLimit: typeof vehicle.speedLimit === 'number' ? vehicle.speedLimit : 60.0,
+      assignedZone: vehicle.assignedZone || 'Gangnam District',
+      firmwareVersion: vehicle.firmwareVersion || 'v2.4.1',
+      latitude: typeof vehicle.latitude === 'number' ? vehicle.latitude : 37.4979,
+      longitude: typeof vehicle.longitude === 'number' ? vehicle.longitude : 127.0276,
+      devices: vehicle.devices || (vehicle.sensors ? vehicle.sensors.map((s: any) => ({
+        deviceId: s.deviceId || `DEV-${vehicle.id || 'UNIT'}-${s.type}-${s.id}`,
+        deviceType: s.deviceType || `DEV_${s.type}`,
+        serialNumber: s.serialNumber || `SN-${s.type}-00000`,
+        status: s.deviceStatus || (s.status === 'ONLINE' ? 'DEV_ONLINE' : s.status === 'DEGRADED' ? 'DEV_DEGRADED' : 'DEV_OFFLINE'),
+        firmwareVersion: s.firmwareVersion || s.firmware || 'v1.0.0',
+        mountPosition: s.mountPosition,
+      })) : []),
+    };
+
+
+
+    return api.post(url, payload);
   },
 
   /**
@@ -35,3 +53,4 @@ export const simulatorApiService = {
     return api.post(url, payload);
   },
 };
+

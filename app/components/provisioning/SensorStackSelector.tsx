@@ -42,16 +42,23 @@ export const SensorStackSelector: React.FC<SensorStackSelectorProps> = ({
               }`}
             >
               <div>
-                <div className="flex items-center gap-1.5 font-bold">
-                  <span className="text-brand-cyan">{presetSensor.id}</span>
-                  <span className="text-[11px]">{presetSensor.name}</span>
+                <div className="flex items-center gap-1.5 font-bold flex-wrap">
+                  <span className="text-brand-cyan">{presetSensor.deviceId || presetSensor.id}</span>
+                  <span className="text-[10px] px-1 py-0.2 rounded bg-cyan-950/40 text-cyan-300 border border-cyan-800/40">
+                    {presetSensor.deviceType || `DEV_${presetSensor.type}`}
+                  </span>
+                  <span className="text-[11px] text-[var(--foreground)]">{presetSensor.name}</span>
                 </div>
-                <span className="text-[10px] text-[var(--muted-text)] block">
-                  {presetSensor.mountPosition} , {presetSensor.firmware}
-                </span>
+                <div className="text-[10px] text-[var(--muted-text)] mt-0.5 flex items-center gap-2 flex-wrap">
+                  {presetSensor.serialNumber && (
+                    <span className="text-brand-amber/80 font-mono">SN: {presetSensor.serialNumber}</span>
+                  )}
+                  <span>• {presetSensor.mountPosition}</span>
+                  <span className="text-emerald-400/80">• FW: {presetSensor.firmwareVersion || presetSensor.firmware}</span>
+                </div>
               </div>
               <div
-                className={`w-4 h-4 rounded border flex items-center justify-center ${
+                className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ml-2 ${
                   isChecked
                     ? 'bg-brand-cyan border-brand-cyan text-slate-950'
                     : 'border-[var(--panel-border)]'

@@ -23,7 +23,7 @@ export const SimulatorProvider: React.FC<{ children: ReactNode }> = ({ children 
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
   const [config, setConfig] = useState<SimulatorConfig>({
     intervalMs: 1000,
-    targetApiUrl: 'http://localhost:3003',
+    targetApiUrl: 'http://localhost:8090',
     forwardHttp: false,
     heartbeatTimeoutSeconds: 10,
   });

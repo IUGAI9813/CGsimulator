@@ -77,7 +77,17 @@ export interface Translations {
   shuttleDesc: string;
   podDesc: string;
   vehicleNameLabel: string;
+  vehicleIdLabel: string;
   vinLabel: string;
+  modelLabel: string;
+  initialStatusLabel: string;
+  speedLimitLabel: string;
+  assignedZoneLabel: string;
+  firmwareVersionLabel: string;
+  latitudeLabel: string;
+  longitudeLabel: string;
+  jsonPayloadPreview: string;
+  serialNumber: string;
   onboardSensorStack: string;
   toggleSensorHint: string;
   btnProvisionVehicle: string;
@@ -184,12 +194,22 @@ const translations: Record<Language, Translations> = {
     robotaxiDesc: 'Dual 128ch LiDAR, 360° Vision, RTK GNSS, V2X',
     shuttleDesc: 'Quad LiDARs, Dual Radars, 8ch Vision, Dual GNSS',
     podDesc: 'Solid-State LiDAR, Compact Vision, Micro V2X',
-    vehicleNameLabel: 'Vehicle Name / Identifier:',
+    vehicleNameLabel: 'Vehicle Display Name:',
+    vehicleIdLabel: 'Vehicle Identifier (ID):',
     vinLabel: 'VIN (Vehicle Identification Number):',
-    onboardSensorStack: 'Onboard Device Sensor Stack',
-    toggleSensorHint: 'Toggle sensors to customize configuration',
-    btnProvisionVehicle: 'Provision Vehicle',
-    provisioningGuidelines: 'Provisioning Guidelines',
+    modelLabel: 'Vehicle Platform / Model:',
+    initialStatusLabel: 'Initial Common Status:',
+    speedLimitLabel: 'Speed Limit (km/h):',
+    assignedZoneLabel: 'Assigned Geofence Zone:',
+    firmwareVersionLabel: 'Central ECU Firmware:',
+    latitudeLabel: 'Spawn Latitude (°N):',
+    longitudeLabel: 'Spawn Longitude (°E):',
+    jsonPayloadPreview: 'Registration Payload Preview (JSON)',
+    serialNumber: 'Serial Number',
+    onboardSensorStack: 'Onboard Hardware Devices & Sensors',
+    toggleSensorHint: 'Toggle devices to customize payload stack',
+    btnProvisionVehicle: 'Register Vehicle',
+    provisioningGuidelines: 'Registration Guidelines',
     registeredFleetNodes: 'Registered Fleet Nodes',
     removeVehicle: 'Remove Vehicle',
 
@@ -288,12 +308,22 @@ const translations: Record<Language, Translations> = {
     robotaxiDesc: '듀얼 128ch 라이다, 360° 비전, RTK GNSS, V2X',
     shuttleDesc: '쿼드 라이다, 듀얼 레이더, 8ch 비전, 듀얼 GNSS',
     podDesc: '솔리드스테이트 라이다, 컴팩트 비전, 마이크로 V2X',
-    vehicleNameLabel: '차량 명칭 / 식별자:',
+    vehicleNameLabel: '차량 표시 명칭:',
+    vehicleIdLabel: '차량 식별자 (ID):',
     vinLabel: '차대번호 (VIN):',
-    onboardSensorStack: '내장 디바이스 센서 스택',
-    toggleSensorHint: '센서를 선택/해제하여 구성을 변경합니다',
+    modelLabel: '차량 플랫폼 / 모델:',
+    initialStatusLabel: '초기 공통 상태:',
+    speedLimitLabel: '제한 속도 (km/h):',
+    assignedZoneLabel: '배정 지오펜스 구역:',
+    firmwareVersionLabel: '중앙 ECU 펌웨어:',
+    latitudeLabel: '시작 위도 (°N):',
+    longitudeLabel: '시작 경도 (°E):',
+    jsonPayloadPreview: '등록 페이로드 미리보기 (JSON)',
+    serialNumber: '일련번호',
+    onboardSensorStack: '내장 하드웨어 장치 및 센서 스택',
+    toggleSensorHint: '장치를 선택/해제하여 페이로드 구성을 변경합니다',
     btnProvisionVehicle: '차량 등록',
-    provisioningGuidelines: '프로비저닝 가이드라인',
+    provisioningGuidelines: '등록 가이드라인',
     registeredFleetNodes: '등록된 플릿 노드',
     removeVehicle: '차량 삭제',
 
