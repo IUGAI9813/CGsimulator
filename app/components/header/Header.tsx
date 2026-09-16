@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Radio, Moon, Sun, Settings, Globe, Shield, RefreshCw } from 'lucide-react';
+import { Radio, Moon, Sun, Settings, Globe, Shield, RefreshCw, Key, RotateCcw } from 'lucide-react';
 import { useSimulator } from '../../context/SimulatorContext';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -162,46 +162,121 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Quick Settings Drawer */}
       {showConfigModal && (
-        <div className="bg-[var(--panel-bg)] border-b border-[var(--panel-border)] p-4 text-xs font-mono">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-brand-cyan" />
-                <span className="font-bold text-[var(--foreground)]">{t.targetApiEndpoint}</span>
-                <input
-                  type="text"
-                  value={config.targetApiUrl}
-                  onChange={(e) => updateConfig({ targetApiUrl: e.target.value })}
-                  className="px-2 py-1 rounded bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] text-xs font-mono w-60"
-                  placeholder="http://localhost:3003"
-                />
+        <div className="bg-[var(--panel-bg)] border-b border-[var(--panel-border)] p-4 text-xs font-mono shadow-xl">
+          <div className="max-w-7xl mx-auto space-y-4">
+            {/* Top Config Row: Endpoint & Forward */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-brand-cyan" />
+                  <span className="font-bold text-[var(--foreground)]">{t.targetApiEndpoint}</span>
+                  <input
+                    type="text"
+                    value={config.targetApiUrl}
+                    onChange={(e) => updateConfig({ targetApiUrl: e.target.value })}
+                    className="px-2.5 py-1.5 rounded bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] text-xs font-mono w-64 focus:border-brand-cyan focus:outline-none"
+                    placeholder="http://localhost:8090"
+                  />
+                </div>
+
+                <label className="flex items-center gap-2 cursor-pointer bg-[var(--input-bg)] px-3 py-1.5 rounded border border-[var(--panel-border)]">
+                  <input
+                    type="checkbox"
+                    checked={config.forwardHttp}
+                    onChange={(e) => updateConfig({ forwardHttp: e.target.checked })}
+                    className="w-4 h-4 rounded text-brand-cyan focus:ring-0 cursor-pointer"
+                  />
+                  <span className="text-[var(--foreground)] font-bold">{t.forwardHttp}</span>
+                </label>
+
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-[var(--muted-text)]">{t.heartbeatTimeoutLimit}</span>
+                  <span className="font-bold text-brand-amber">{config.heartbeatTimeoutSeconds}s</span>
+                </div>
               </div>
 
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={config.forwardHttp}
-                  onChange={(e) => updateConfig({ forwardHttp: e.target.checked })}
-                  className="w-4 h-4 rounded text-brand-cyan focus:ring-0 cursor-pointer"
-                />
-                <span className="text-[var(--foreground)]">{t.forwardHttp}</span>
-              </label>
-
-              <div className="flex items-center gap-2">
-                <span className="text-[var(--muted-text)]">{t.heartbeatTimeoutLimit}</span>
-                <span className="font-bold text-brand-amber">{config.heartbeatTimeoutSeconds}s</span>
-              </div>
+              <button
+                onClick={() => setShowConfigModal(false)}
+                className="px-3 py-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-white font-bold cursor-pointer transition-all"
+              >
+                {t.close}
+              </button>
             </div>
 
-            <button
-              onClick={() => setShowConfigModal(false)}
-              className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white font-bold cursor-pointer"
-            >
-              {t.close}
-            </button>
+            {/* Bottom Config Row: 2 API Keys (Provisioning & Telemetry) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-[var(--panel-border)]">
+              {/* Key 1: Vehicle Provisioning API Key */}
+              <div className="p-3 rounded bg-[var(--input-bg)] border border-[var(--panel-border)] space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Key className="w-3.5 h-3.5 text-brand-cyan" />
+                    <span className="font-bold text-[var(--foreground)] text-[11px]">
+                      {t.provisioningApiKeyLabel}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => updateConfig({ provisioningApiKey: 'cg_demo_provisioning_key_2026' })}
+                    className="flex items-center gap-1 text-[10px] text-brand-cyan hover:underline cursor-pointer"
+                    title={t.resetToDemo}
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Demo</span>
+                  </button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={config.provisioningApiKey}
+                    onChange={(e) => updateConfig({ provisioningApiKey: e.target.value })}
+                    className="w-full px-2.5 py-1 rounded bg-[var(--panel-bg)] border border-[var(--input-border)] text-xs font-mono text-[var(--foreground)] focus:border-brand-cyan focus:outline-none"
+                    placeholder="cg_demo_provisioning_key_2026"
+                  />
+                </div>
+                <div className="text-[10px] text-[var(--muted-text)] flex items-center justify-between">
+                  <span>Scope: <code className="text-brand-cyan font-bold">PROVISIONING</code></span>
+                  <span className="text-brand-emerald">Quota: 200/day</span>
+                </div>
+              </div>
+
+              {/* Key 2: Telemetry Ingest API Key */}
+              <div className="p-3 rounded bg-[var(--input-bg)] border border-[var(--panel-border)] space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Key className="w-3.5 h-3.5 text-brand-amber" />
+                    <span className="font-bold text-[var(--foreground)] text-[11px]">
+                      {t.telemetryApiKeyLabel}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => updateConfig({ telemetryApiKey: 'cg_demo_telemetry_key_2026' })}
+                    className="flex items-center gap-1 text-[10px] text-brand-amber hover:underline cursor-pointer"
+                    title={t.resetToDemo}
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Demo</span>
+                  </button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={config.telemetryApiKey}
+                    onChange={(e) => updateConfig({ telemetryApiKey: e.target.value })}
+                    className="w-full px-2.5 py-1 rounded bg-[var(--panel-bg)] border border-[var(--input-border)] text-xs font-mono text-[var(--foreground)] focus:border-brand-amber focus:outline-none"
+                    placeholder="cg_demo_telemetry_key_2026"
+                  />
+                </div>
+                <div className="text-[10px] text-[var(--muted-text)] flex items-center justify-between">
+                  <span>Scope: <code className="text-brand-amber font-bold">TELEMETRY</code></span>
+                  <span className="text-brand-emerald">Quota: 50,000/day</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
     </header>
   );
 };
+

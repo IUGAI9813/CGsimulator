@@ -105,8 +105,10 @@ export interface IncidentRecord {
 
 export interface SimulatorConfig {
   intervalMs: number;          // 500ms, 1000ms, 2000ms
-  targetApiUrl: string;        // e.g. http://localhost:3003 (CoreGuard SOC) or internal
+  targetApiUrl: string;        // e.g. http://localhost:8090 (CoreGuard SOC) or internal
   forwardHttp: boolean;        // Whether to perform real POST requests
   heartbeatTimeoutSeconds: number; // Default: 10s
+  provisioningApiKey: string;  // API Key for vehicle registration
+  telemetryApiKey: string;     // API Key for telemetry ingestion
 }
 

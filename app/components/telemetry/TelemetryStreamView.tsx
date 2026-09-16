@@ -61,11 +61,12 @@ export const TelemetryStreamView: React.FC<TelemetryStreamViewProps> = ({
 
       {/* Main Grid: Map (Left) & JSON Terminal (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <GangnamVectorMap vehicles={vehicles} />
+        <GangnamVectorMap vehicles={vehicles} className="lg:col-span-7" />
         <JsonPayloadViewer
           latestPayload={latestPayload}
           totalLogsCount={telemetryLogs.length}
           onClearLogs={onClearLogs}
+          className="lg:col-span-5"
         />
       </div>
 

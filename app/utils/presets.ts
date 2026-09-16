@@ -330,7 +330,7 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     latitude: 37.4979,
     longitude: 127.0276,
     registeredAt: new Date(Date.now() - 3600000).toISOString(),
-    lifecycleStatus: 'RUNNING' as const,
+    lifecycleStatus: 'STOPPED' as const,
     lastHeartbeat: Date.now(),
     secondsSinceLastHeartbeat: 0,
     sensors: PRESET_SENSORS.ROBOTAXI,
@@ -343,7 +343,7 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     },
     lastTelemetry: null,
     routeProgress: 0.15,
-    totalPacketsSent: 142,
+    totalPacketsSent: 0,
   },
   {
     id: 'SHUTTLE-089',
@@ -360,7 +360,7 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     latitude: 37.5045,
     longitude: 127.0490,
     registeredAt: new Date(Date.now() - 7200000).toISOString(),
-    lifecycleStatus: 'RUNNING' as const,
+    lifecycleStatus: 'STOPPED' as const,
     lastHeartbeat: Date.now(),
     secondsSinceLastHeartbeat: 0,
     sensors: PRESET_SENSORS.SHUTTLE,
@@ -373,7 +373,7 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     },
     lastTelemetry: null,
     routeProgress: 0.58,
-    totalPacketsSent: 98,
+    totalPacketsSent: 0,
   },
   {
     id: 'POD-104',
@@ -390,9 +390,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     latitude: 37.5088,
     longitude: 127.0632,
     registeredAt: new Date(Date.now() - 10800000).toISOString(),
-    lifecycleStatus: 'PAUSED' as const,
-    lastHeartbeat: Date.now() - 4000,
-    secondsSinceLastHeartbeat: 4,
+    lifecycleStatus: 'STOPPED' as const,
+    lastHeartbeat: Date.now(),
+    secondsSinceLastHeartbeat: 0,
     sensors: PRESET_SENSORS.DELIVERY_POD,
     injections: {
       lidarFailure: false,
@@ -403,7 +403,7 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     },
     lastTelemetry: null,
     routeProgress: 0.82,
-    totalPacketsSent: 34,
+    totalPacketsSent: 0,
   }
 ];
 

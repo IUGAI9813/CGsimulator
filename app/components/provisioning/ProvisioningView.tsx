@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { Plus, Check, AlertCircle, Send } from 'lucide-react';
+import { Plus, Check, AlertCircle, Send, Key, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { VehicleType, DeviceSensor, Vehicle, VehicleRegistrationPayload, VehicleDevicePayload } from '../../types/simulator';
 import { PRESET_SENSORS, INITIAL_VEHICLES, VEHICLE_PROFILE_DEFAULTS } from '../../utils/presets';
@@ -13,7 +13,6 @@ import { RegistrationGuidelines } from './RegistrationGuidelines';
 import { FormFieldRenderer, FieldConfig } from '../common/FormFieldRenderer';
 import { useRegisterVehicleMutation } from '../../hooks/api/useVehiclesQuery';
 import { useSimulator } from '../../context/SimulatorContext';
-import { log } from 'node:console';
 
 export interface ProvisioningFormData {
   vehicleId: string;
@@ -39,8 +38,8 @@ export const ProvisioningView: React.FC<ProvisioningViewProps> = ({
   onDeleteVehicle,
 }) => {
   const { t } = useLanguage();
-  const { config } = useSimulator();
-  const registerMutation = useRegisterVehicleMutation(config.targetApiUrl);
+  const { config, updateConfig } = useSimulator();
+  const registerMutation = useRegisterVehicleMutation(config.targetApiUrl, config.provisioningApiKey);
 
   const [selectedType, setSelectedType] = useState<VehicleType>('ROBOTAXI');
   const [sensorsList, setSensorsList] = useState<DeviceSensor[]>(PRESET_SENSORS['ROBOTAXI']);
@@ -209,7 +208,6 @@ export const ProvisioningView: React.FC<ProvisioningViewProps> = ({
 
       console.log(livePayload);
 
-
       if (config.forwardHttp) {
         await registerMutation.mutateAsync(livePayload);
       }
@@ -281,6 +279,32 @@ export const ProvisioningView: React.FC<ProvisioningViewProps> = ({
             <span className="text-[10px] font-mono text-[var(--muted-text)]">
               POST /api/v1/simulator/vehicles
             </span>
+          </div>
+
+          {/* Provisioning Key Configuration Bar */}
+          <div className="p-2.5 rounded bg-[var(--input-bg)] border border-[var(--panel-border)] space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--foreground)]">
+                <Key className="w-3.5 h-3.5 text-brand-cyan" />
+                <span>{t.provisioningApiKeyLabel}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => updateConfig({ provisioningApiKey: 'cg_demo_provisioning_key_2026' })}
+                className="flex items-center gap-1 text-[10px] font-mono text-brand-cyan hover:underline cursor-pointer"
+                title={t.resetToDemo}
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>{t.resetToDemo}</span>
+              </button>
+            </div>
+            <input
+              type="text"
+              value={config.provisioningApiKey}
+              onChange={(e) => updateConfig({ provisioningApiKey: e.target.value })}
+              className="w-full px-2.5 py-1 rounded bg-[var(--panel-bg)] border border-[var(--input-border)] text-xs font-mono text-[var(--foreground)] focus:border-brand-cyan focus:outline-none"
+              placeholder="cg_demo_provisioning_key_2026"
+            />
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

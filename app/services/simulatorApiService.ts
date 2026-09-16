@@ -16,7 +16,11 @@ export const simulatorApiService = {
   /**
    * Dispatches vehicle provisioning registration request
    */
-  async registerVehicle(targetUrl: string = '', vehicle: VehicleRegistrationPayload | Partial<Vehicle> | any): Promise<any> {
+  async registerVehicle(
+    targetUrl: string = '',
+    vehicle: VehicleRegistrationPayload | Partial<Vehicle> | any,
+    apiKey?: string
+  ): Promise<any> {
     const url = targetUrl ? `${targetUrl}/api/v1/simulator/vehicles` : '/api/v1/simulator/vehicles';
 
     // Normalize payload to match CoreGuard backend contract
@@ -40,17 +44,28 @@ export const simulatorApiService = {
       })) : []),
     };
 
+    const headers: Record<string, string> = {};
+    if (apiKey) {
+      headers['X-API-KEY'] = apiKey;
+    }
 
-
-    return api.post(url, payload);
+    return api.post(url, payload, { headers });
   },
 
   /**
    * Dispatches real-time telemetry payload ingestion
    */
-  async ingestTelemetry(targetUrl: string = '', payload: TelemetryPayload): Promise<any> {
+  async ingestTelemetry(
+    targetUrl: string = '',
+    payload: TelemetryPayload,
+    apiKey?: string
+  ): Promise<any> {
     const url = targetUrl ? `${targetUrl}/api/v1/telemetry/ingest` : '/api/v1/telemetry/ingest';
-    return api.post(url, payload);
+    const headers: Record<string, string> = {};
+    if (apiKey) {
+      headers['X-API-KEY'] = apiKey;
+    }
+    return api.post(url, payload, { headers });
   },
 };
 

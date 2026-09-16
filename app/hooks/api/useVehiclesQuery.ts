@@ -19,12 +19,12 @@ export function useVehiclesQuery(targetUrl?: string) {
 /**
  * Hook to register a new vehicle using useMutation
  */
-export function useRegisterVehicleMutation(targetUrl?: string) {
+export function useRegisterVehicleMutation(targetUrl?: string, apiKey?: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (vehicleData: Partial<Vehicle>) =>
-      simulatorApiService.registerVehicle(targetUrl, vehicleData),
+      simulatorApiService.registerVehicle(targetUrl, vehicleData, apiKey),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: VEHICLES_QUERY_KEY });
     },
@@ -34,9 +34,9 @@ export function useRegisterVehicleMutation(targetUrl?: string) {
 /**
  * Hook to send telemetry ingestion ticks using useMutation
  */
-export function useIngestTelemetryMutation(targetUrl?: string) {
+export function useIngestTelemetryMutation(targetUrl?: string, apiKey?: string) {
   return useMutation({
     mutationFn: (payload: TelemetryPayload) =>
-      simulatorApiService.ingestTelemetry(targetUrl, payload),
+      simulatorApiService.ingestTelemetry(targetUrl, payload, apiKey),
   });
 }

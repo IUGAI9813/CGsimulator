@@ -19,6 +19,10 @@ export interface Translations {
   targetApiEndpoint: string;
   forwardHttp: string;
   heartbeatTimeoutLimit: string;
+  provisioningApiKeyLabel: string;
+  telemetryApiKeyLabel: string;
+  demoKeyActive: string;
+  resetToDemo: string;
   close: string;
 
   // Fleet View
@@ -29,6 +33,20 @@ export interface Translations {
   heartbeatWatchdog: string;
   fleetMatrixTitle: string;
   fleetMatrixDesc: string;
+  searchVehiclesPlaceholder: string;
+  filterAll: string;
+  filterRunning: string;
+  filterUnderAttack: string;
+  filterStopped: string;
+  page: string;
+  of: string;
+  showing: string;
+  prevPage: string;
+  nextPage: string;
+  noFilteredResults: string;
+  startAllSimulation: string;
+  stopAllSimulation: string;
+  apiKeyRequiredWarning: string;
   noVehiclesTitle: string;
   noVehiclesDesc: string;
   vin: string;
@@ -140,6 +158,10 @@ const translations: Record<Language, Translations> = {
     targetApiEndpoint: 'Target SOC API Endpoint:',
     forwardHttp: 'Forward Real HTTP Telemetry (POST /api/v1/telemetry/ingest)',
     heartbeatTimeoutLimit: 'Heartbeat Timeout Limit:',
+    provisioningApiKeyLabel: 'Vehicle Provisioning API Key:',
+    telemetryApiKeyLabel: 'Telemetry Ingest API Key:',
+    demoKeyActive: 'Demo Key Active',
+    resetToDemo: 'Reset to Demo Key',
     close: 'Close',
 
     fleetCapacity: 'Fleet Capacity',
@@ -149,6 +171,20 @@ const translations: Record<Language, Translations> = {
     heartbeatWatchdog: 'Heartbeat Watchdog',
     fleetMatrixTitle: 'Virtual Fleet & Real-Time Injections Matrix',
     fleetMatrixDesc: 'Control individual vehicle lifecycle states and inject live failure/cyber-attack payloads.',
+    searchVehiclesPlaceholder: 'Search by ID, VIN, model or zone...',
+    filterAll: 'All Nodes',
+    filterRunning: 'Running',
+    filterUnderAttack: 'Under Attack',
+    filterStopped: 'Idle / Offline',
+    page: 'Page',
+    of: 'of',
+    showing: 'Showing',
+    prevPage: 'Previous',
+    nextPage: 'Next',
+    noFilteredResults: 'No vehicles match your search or filter criteria.',
+    startAllSimulation: 'Start All Fleet (Simulation)',
+    stopAllSimulation: 'Stop All Fleet',
+    apiKeyRequiredWarning: 'Telemetry API Key is required to run simulation.',
     noVehiclesTitle: 'No virtual vehicles provisioned.',
     noVehiclesDesc: 'Use the Vehicle Provisioning tab to register nodes.',
     vin: 'VIN',
@@ -254,6 +290,10 @@ const translations: Record<Language, Translations> = {
     targetApiEndpoint: '대상 관제 SOC API 엔드포인트:',
     forwardHttp: '실제 HTTP 텔레메트리 전송 (POST /api/v1/telemetry/ingest)',
     heartbeatTimeoutLimit: '하트비트 타임아웃 기준:',
+    provisioningApiKeyLabel: '차량 프로비저닝 API 키:',
+    telemetryApiKeyLabel: '텔레메트리 수집 API 키:',
+    demoKeyActive: '데모 키 적용됨',
+    resetToDemo: '데모 키로 초기화',
     close: '닫기',
 
     fleetCapacity: '전체 플릿 규모',
@@ -263,6 +303,20 @@ const translations: Record<Language, Translations> = {
     heartbeatWatchdog: '하트비트 감시견',
     fleetMatrixTitle: '가상 플릿 및 실시간 공격 주입 매트릭스',
     fleetMatrixDesc: '개별 차량의 수명 주기 상태를 제어하고 실시간 장애/사이버 공격 페이로드를 주입합니다.',
+    searchVehiclesPlaceholder: 'ID, 차대번호(VIN), 모델명으로 검색...',
+    filterAll: '전체 노드',
+    filterRunning: '주행 중',
+    filterUnderAttack: '공격/장애 주입됨',
+    filterStopped: '정지 / 오프라인',
+    page: '페이지',
+    of: '/',
+    showing: '표시 중',
+    prevPage: '이전',
+    nextPage: '다음',
+    noFilteredResults: '검색 및 필터 조건에 일치하는 차량이 없습니다.',
+    startAllSimulation: '전체 플릿 시뮬레이션 시작',
+    stopAllSimulation: '전체 플릿 정지',
+    apiKeyRequiredWarning: '시뮬레이션을 시작하려면 텔레메트리 API 키가 필요합니다.',
     noVehiclesTitle: '등록된 가상 차량이 없습니다.',
     noVehiclesDesc: '차량 프로비저닝 탭을 사용하여 노드를 등록하세요.',
     vin: '차대번호(VIN)',

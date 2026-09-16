@@ -23,9 +23,11 @@ export const SimulatorProvider: React.FC<{ children: ReactNode }> = ({ children 
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
   const [config, setConfig] = useState<SimulatorConfig>({
     intervalMs: 1000,
-    targetApiUrl: 'http://localhost:8090',
+    targetApiUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8090',
     forwardHttp: false,
     heartbeatTimeoutSeconds: 10,
+    provisioningApiKey: process.env.NEXT_PUBLIC_PROVISIONING_API_KEY || 'cg_demo_provisioning_key_2026',
+    telemetryApiKey: process.env.NEXT_PUBLIC_TELEMETRY_API_KEY || 'cg_demo_telemetry_key_2026',
   });
 
   const updateConfig = (newConfig: Partial<SimulatorConfig>) => {

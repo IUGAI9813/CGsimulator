@@ -7,12 +7,14 @@ interface JsonPayloadViewerProps {
   latestPayload: TelemetryPayload | null;
   totalLogsCount: number;
   onClearLogs: () => void;
+  className?: string;
 }
 
 export const JsonPayloadViewer: React.FC<JsonPayloadViewerProps> = ({
   latestPayload,
   totalLogsCount,
   onClearLogs,
+  className = '',
 }) => {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
@@ -26,7 +28,7 @@ export const JsonPayloadViewer: React.FC<JsonPayloadViewerProps> = ({
   };
 
   return (
-    <div className="lg:col-span-5 cyber-panel rounded flex flex-col justify-between">
+    <div className={`cyber-panel rounded flex flex-col justify-between ${className}`}>
       <div>
         <div className="cyber-panel-header">
           <div className="flex items-center gap-2">

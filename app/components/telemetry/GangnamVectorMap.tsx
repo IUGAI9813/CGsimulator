@@ -7,13 +7,14 @@ import { useLanguage } from '../../context/LanguageContext';
 
 interface GangnamVectorMapProps {
   vehicles: Vehicle[];
+  className?: string;
 }
 
-export const GangnamVectorMap: React.FC<GangnamVectorMapProps> = ({ vehicles }) => {
+export const GangnamVectorMap: React.FC<GangnamVectorMapProps> = ({ vehicles, className = '' }) => {
   const { t } = useLanguage();
 
   return (
-    <div className="lg:col-span-7 cyber-panel rounded overflow-hidden flex flex-col">
+    <div className={`cyber-panel rounded overflow-hidden flex flex-col ${className}`}>
       <div className="cyber-panel-header">
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-brand-cyan" />
